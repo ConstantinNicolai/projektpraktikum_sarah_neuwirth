@@ -62,6 +62,27 @@ void hf (double**** G, int i, int j, int k, int l){                         //de
 
 }
 
+void hf_iterator(double**** matrix, int size){
+  for (int index1 = 1; index1<size-1; index1++){
+    for (int index2 = 1; index2<size-1;index2++){
+      for (int index3 = 1; index3<size-1;index3++){
+        for (int index4 = 1; index4<size-1;index4++){
+          hf(matrix, index1, index2, index3, index4);
+}}}}}
+
+void heater (int i, int j, int k , int l, double dist, double heat, int size, double**** matrix){  //first four parameters are the coordinates of the middle of the heatsphere, dist is the radius of the heatsphere, heat is its heat, size is the length of each matrix dimension and matrix is the Matrix itself
+  for (int index1 = 0; index1<size; index1++){
+    for (int index2 = 0; index2<size;index2++){
+      for (int index3 = 0; index3<size;index3++){
+        for (int index4 = 0; index4<size;index4++){
+          if (distance(i,j,k,l,index1, index2, index3, index4)<dist){
+            matrix[index1][index2][index3][index4]=heat;
+            }
+        }
+      }
+    }
+  }
+}
 
 
 int main(int argc, char** argv) {
@@ -71,25 +92,30 @@ int main(int argc, char** argv) {
     exit(1);
   }*/
 
+  int number_of_iterations = atoi(argv[2]);
+  int heatsourcepos1 = atoi(argv[3]);
+  int heatsourcepos2 = atoi(argv[4]);
+  int heatsourcepos3 = atoi(argv[5]);
+  int heatsourcepos4 = atoi(argv[6]);
+  double heat = atoi(argv[7]);
+  double radius = atoi(argv[8]);
   int d1 = atoi(argv[1]);
   int d2 = atoi(argv[1]);
   int d3 = atoi(argv[1]);
   int d4 = atoi(argv[1]);
   double**** G = init_matrix(d1, d2, d3, d4);
 
-  distance(1,1,1,1,5,5,5,5);
+  printf("%f \n", G[3][3][3][3]);
 
-  printf("%f \n", distance(6,4,4,4,4,4,4,4));
+  heater(heatsourcepos1, heatsourcepos2, heatsourcepos3, heatsourcepos4, radius, heat, d1, G);
 
-  G[2][3][2][1] = 174.0;
+  printf("%f \n", G[3][3][3][3]);
 
-  printf("%f \n", G[2][3][2][1]);
+  for (int iterator = 0; iterator<number_of_iterations; iterator++){
+    hf_iterator(G, d1);
+  }
 
-  hf(G,2,3,2,1);
-
-  printf("%f \n", G[2][3][2][1]);
-
-  printf("Last number: %f\n", G[d1 - 1][d2 - 1][d3 - 1][d4 - 1]);
+  printf("%f \n", G[3][3][3][3]);
 
   delete_matrix(G, d1, d2, d3);
 
