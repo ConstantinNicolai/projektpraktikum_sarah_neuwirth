@@ -1,6 +1,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <chrono>
+#include <iostream>
 
 double**** init_matrix(int d1, int d2, int d3, int d4) // function init_matrix reserves memory for a d1*d2*d3*d4 matrix on the heap and initializes the matrix values with 0.0
 {
@@ -87,6 +89,9 @@ void heater (int i, int j, int k , int l, double dist, double heat, int size, do
 
 int main(int argc, char** argv) {
 
+  auto begin = std::chrono::high_resolution_clock::now();
+
+
   /*if (argc < 5) {
     printf("Specify a size for every dimension!\n");
     exit(1);
@@ -105,18 +110,23 @@ int main(int argc, char** argv) {
   int d4 = atoi(argv[1]);
   double**** G = init_matrix(d1, d2, d3, d4);
 
-  printf("%f \n", G[3][3][3][3]);
+  //printf("%f \n", G[3][3][3][3]);
 
   heater(heatsourcepos1, heatsourcepos2, heatsourcepos3, heatsourcepos4, radius, heat, d1, G);
 
-  printf("%f \n", G[3][3][3][3]);
+  //printf("%f \n", G[3][3][3][3]);
 
   for (int iterator = 0; iterator<number_of_iterations; iterator++){
     hf_iterator(G, d1);
   }
 
-  printf("%f \n", G[3][3][3][3]);
+  //printf("%f \n", G[3][3][3][3]);
 
   delete_matrix(G, d1, d2, d3);
+
+  auto end = std::chrono::high_resolution_clock::now();
+
+  std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(end-begin).count() << "ns" << std::endl;
+
 
 }
